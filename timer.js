@@ -1,4 +1,4 @@
-var PATH_TO_BUZZER = "";
+var PATH_TO_BUZZER = "buzzer.mp3";
 
 function Timer() {
     var time;
@@ -8,12 +8,23 @@ function Timer() {
     var defaultTime = 60;
     var timerDiv = document.querySelector(".timer__counter");
     var timerStart = document.querySelector(".timer__start");
-    var plus5min = document.querySelector(".timer__5mins .top-trangle");
-    var minus5min = document.querySelector(".timer__5mins .bottom-trangle");
+    var plus5minsArrow = document.querySelector(".timer__5mins .triangle-top");
+    var minus5minsArrow = document.querySelector(".timer__5mins .triangle-bottom");
+    var plus1minArrow = document.querySelector(".timer__1min .triangle-top");
+    var minus1minArrow = document.querySelector(".timer__1min .triangle-bottom");
+    var plus10secsArrow = document.querySelector(".timer__10secs .triangle-top");
+    var minus10secsArrow = document.querySelector(".timer__10secs .triangle-bottom");
+    var audioId = document.querySelector(".timer__buzzer");
 
     this.init = function () {
         setDefaultTime();
         timerStart.addEventListener('click', startHandler);
+        plus5minsArrow.addEventListener('click', plus5mins);
+        minus5minsArrow.addEventListener('click', minus5mins);
+        plus1minArrow.addEventListener('click', plus1min);
+        minus1minArrow.addEventListener('click', minus1min);
+        plus10secsArrow.addEventListener('click', plus10secs);
+        minus10secsArrow.addEventListener('click', minus10secs);
     }
 
     function getMinutes() {
@@ -37,11 +48,26 @@ function Timer() {
 
     function startHandler() {
         if (timerStart.innerText == "Pause") {
-            timerStart.innerText = "Start";
             clearInterval(timerId);
+            if (time == MIN) {
+                soundBuzzer();
+                timerStart.removeEventListener('click', startHandler); //should this be done for every listener??
+                setTimeout(function () {
+                    timerStart.innerText = "Start";
+                    timerStart.addEventListener('click', startHandler);
+                }, 3000);
+            }
+            else {
+                timerStart.innerText = "Start";
+            }
+
         }
         else {
             timerStart.innerText = "Pause";
+            if (time == MIN) {
+                setDefaultTime();
+                updateCounter();
+            }
             startTimer();
         }
     }
@@ -49,30 +75,33 @@ function Timer() {
     function startTimer() {
         timerId = setInterval(function () {
 
+
             --time;
             updateCounter();
 
-            if (time == MIN) {startHandler(); }
+            if (time <= MIN) { startHandler(); }
 
 
         }, 1000);
     }
 
     function updateTime(seconds) {
-        if (time + seconds > MAX) {
+        if (time + seconds >= MAX) {
             time = 3600;
         }
-        else if (time + seconds < MIN) {
+        else if (time + seconds <= MIN) {
             time = MIN;
+            startHandler();
         }
         else {
             time = time + seconds;
         }
+        updateCounter();
     }
     function plus5mins() {
         updateTime(300);
     }
-    function minus10mins() {
+    function minus5mins() {
         updateTime(-300);
     }
     function plus1min() {
@@ -86,6 +115,11 @@ function Timer() {
     }
     function minus10secs() {
         updateTime(-10);
+    }
+
+    function soundBuzzer() {
+        var audio = new Audio(PATH_TO_BUZZER);
+        audio.play();
     }
 }
 
