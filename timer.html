@@ -6,41 +6,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        html, body {
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body>
     <style>
         .timer {
-            width: 90px;
-            height: 40px;
+            display: flex;
+            box-sizing: border-box;
+            justify-content: stretch;
+            margin-left: auto;
+            margin-right: auto;
+            width: 350px;
+        }
+        .timer__cell {
             text-align: center;
-            font-weight: bold;
-            line-height: 40px;
+            border-right: 1px solid black;
+            border-bottom: 1px solid black;
+            padding: 2px 10px;
+            
+        }
+        .timer__col {
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+            height: 60px;
+
         }
 
-        button {
-            border: 1px solid rgba(162, 86, 233, 0.651);
-            background-color: rgba(162, 86, 233, 0.651);
-            border-radius: 5px;
+        .timer__counter {
+            height: 60px;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            font-size: 25px;
+            font-weight: bold;
+            
+        }
+
+        .timer__start, .timer__reset {
+            cursor: pointer;
+        }
+
+        .triangle {
+            cursor: pointer;
+            border-right: 10px solid transparent;
+            border-left: 10px solid transparent;
+        }
+
+        .triangle-top {
+            border-bottom: 10px dashed black;
+        }
+
+        .triangle-bottom {
+
+            border-top: 10px solid black;
         }
     </style>
-    <div class="timer"></div>
-    <button class="timer__start">start</button>
+
+    <div class="timer">
+        <div class="timer__col timer__5mins">
+            <div class="timer__cell">
+                <div class="triangle triangle-top"></div>
+            </div>
+            <div class="timer__cell">5 min</div>
+            <div class="timer__cell">
+                <div class="triangle triangle-bottom"></div>
+            </div>
+        </div>
+        <div class="timer__col timer__1mins">
+            <div class="timer__cell">
+                <div class="triangle triangle-top"></div>
+            </div>
+            <div class="timer__cell">1 min</div>
+            <div class="timer__cell">
+                <div class="triangle triangle-bottom"></div>
+            </div>
+        </div>
+        <div class="timer__col timer__10secs">
+            <div class="timer__cell">
+                <div class="triangle triangle-top"></div>
+            </div>
+            <div class="timer__cell">1 min</div>
+            <div class="timer__cell">
+                <div class="triangle triangle-bottom"></div>
+            </div>
+        </div>
+        <div class="timer__col timer__counter">
+
+        </div>
+        <div class="timer__col timer__10secs">
+            <div class="timer__cell">
+                <span class="timer__start">Start</span>
+            </div>
+
+            <div class="timer__cell">
+                <span class="timer__reset">Reset</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="timer.js"></script>
 
     <script type="text/javascript">
-        var timerDiv = document.querySelector(".timer");
-        var time = 60; var timerStart = document.querySelector(".timer__start");
-        timerStart.addEventListener('click', start); timerDiv.innerHTML = "<span> 01:00 </span>";
-        function start() {
-            var timerId = setInterval(function () {
-                var minutes = Math.floor(time / 60);
-                var seconds = time % 60; minutes = ("0" + minutes).slice(-2);
-                seconds = ("0" + seconds).slice(-2);
-                timerDiv.innerHTML = "<span>" + minutes + ":" + seconds + "</span>";
-                if (time == 0) { clearInterval(timerId); } --time;
-            },
-                1000);
-        }
+        // var PATH_TO_BUZZER = "";
+
+        // function Timer() {
+        //     var time;
+        //     var timerId;
+        //     var max = 3600;
+        //     var min = 0;
+        //     var defaultTime = 60;
+        //     var timerDiv = document.querySelector(".timer__counter");
+        //     var timerStart = document.querySelector(".timer__start");
+
+        //     this.init = function () {
+        //         setDefaultTime();
+        //         timerDiv.addEventListener('click', startHandler);
+        //     }
+
+        //     function getMinutes() {
+        //         var minutes = Math.floor(time / 60); //check if there is one seond more then should be at start
+        //         return ("0" + minutes).slice(-2);
+        //     }
+
+        //     function getSeconds() {
+        //         var seconds = time % 60;
+        //         return ("0" + seconds).slice(-2);
+        //     }
+
+        //     function updateCounter() {
+        //         timerDiv.innerHTML = "<span>" + getMinutes() + ":" + getSeconds() + "</span>";
+        //     }
+
+        //     function setDefaultTime() {
+        //         time = 60;
+        //         timerDiv.innerHTML = "<span> 01:00 </span>";
+        //     }
+
+        //     function startHandler() {
+        //         if (timerStart.innerText == "Pause") {
+        //             timerStart.innerText = "Start";
+        //             clearInterval(timerId);
+        //         }
+        //         else {
+        //             timerStart.innerText = "Pause";
+        //         }
+        //     }
+
+        //     function startTimer() {
+        //         timerId = setInterval(function () {
+
+        //             --time;
+        //             updateCounter();
+
+        //             if (time == MIN) { clearInterval(timerId); }
+
+
+        //         }, 1000);
+        //     }
+
+        //     function updateTime(seconds) {
+        //         if (time + seconds > MAX) {
+        //             time = 3600;
+        //         }
+        //         else if (time + seconds < MIN) {
+        //             time = MIN;
+        //         }
+        //         else {
+        //             time = time + seconds;
+        //         }
+        //     }
+        //     function plus5mins() {
+        //         updateTime(300);
+        //     }
+        //     function minus10mins() {
+        //         updateTime(-300);
+        //     }
+        //     function plus1min() {
+        //         updateTime(60);
+        //     }
+        //     function minus1min() {
+        //         updateTime(-60);
+        //     }
+        //     function plus10secs() {
+        //         updateTime(10);
+        //     }
+        //     function minus10secs() {
+        //         updateTime(-10);
+        //     }
+        // }
+
+
+        // var newTimer = new Timer();
+
+        // newTimer.init();
     </script>
 </body>
 
