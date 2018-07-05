@@ -6,6 +6,7 @@ function Timer() {
     var MAX = 3600;
     var MIN = 0;
     var defaultTime = 60;
+    var isRunning = false;
     var timerDiv = document.querySelector(".timer__counter");
     var timerStart = document.querySelector(".timer__start");
     var plus5minsArrow = document.querySelector(".timer__5mins .triangle-top");
@@ -49,13 +50,9 @@ function Timer() {
     function startHandler() {
         if (timerStart.innerText == "Pause") {
             clearInterval(timerId);
+            isRunning = false;
             if (time == MIN) {
-                soundBuzzer();
-                timerStart.removeEventListener('click', startHandler); //should this be done for every listener??
-                setTimeout(function () {
-                    timerStart.innerText = "Start";
-                    timerStart.addEventListener('click', startHandler);
-                }, 3000);
+                timeRunout();
             }
             else {
                 timerStart.innerText = "Start";
@@ -69,12 +66,21 @@ function Timer() {
                 updateCounter();
             }
             startTimer();
+            isRunning = true;
         }
+    }
+
+    function timeRunout() {
+        soundBuzzer();
+        timerStart.removeEventListener('click', startHandler); //should this be done for every listener??
+        setTimeout(function () {
+            timerStart.innerText = "Start";
+            timerStart.addEventListener('click', startHandler);
+        }, 3000);
     }
 
     function startTimer() {
         timerId = setInterval(function () {
-
 
             --time;
             updateCounter();
@@ -91,7 +97,10 @@ function Timer() {
         }
         else if (time + seconds <= MIN) {
             time = MIN;
-            startHandler();
+            if (isRunning) {
+                clearInterval(timerId);
+                timeRunout();
+            }
         }
         else {
             time = time + seconds;
