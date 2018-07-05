@@ -1,0 +1,1 @@
+In VS Code you can remove line-breaks with selecting you code and F1 > join lines
