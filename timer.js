@@ -15,11 +15,12 @@ function Timer() {
     var minus1minArrow = document.querySelector(".timer__1min .triangle-bottom");
     var plus10secsArrow = document.querySelector(".timer__10secs .triangle-top");
     var minus10secsArrow = document.querySelector(".timer__10secs .triangle-bottom");
-    var audioId = document.querySelector(".timer__buzzer");
+    var timerReset = document.querySelector(".timer__reset");
 
     this.init = function () {
         setDefaultTime();
         timerStart.addEventListener('click', startHandler);
+        timerReset.addEventListener('click', resetHandler);
         plus5minsArrow.addEventListener('click', plus5mins);
         minus5minsArrow.addEventListener('click', minus5mins);
         plus1minArrow.addEventListener('click', plus1min);
@@ -29,7 +30,7 @@ function Timer() {
     }
 
     function getMinutes() {
-        var minutes = Math.floor(time / 60); //check if there is one seond more then should be at start
+        var minutes = Math.floor(time / 60);
         return ("0" + minutes).slice(-2);
     }
 
@@ -72,7 +73,7 @@ function Timer() {
 
     function timeRunout() {
         soundBuzzer();
-        timerStart.removeEventListener('click', startHandler); //should this be done for every listener??
+        timerStart.removeEventListener('click', startHandler);
         setTimeout(function () {
             timerStart.innerText = "Start";
             timerStart.addEventListener('click', startHandler);
@@ -90,6 +91,11 @@ function Timer() {
 
         }, 1000);
     }
+    function resetHandler() {
+        setDefaultTime();
+        clearInterval(timerId);
+        isRunning = false;
+    }
 
     function updateTime(seconds) {
         if (time + seconds >= MAX) {
@@ -99,6 +105,7 @@ function Timer() {
             time = MIN;
             if (isRunning) {
                 clearInterval(timerId);
+                isRunning = false;
                 timeRunout();
             }
         }
