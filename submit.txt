@@ -1,0 +1,2 @@
+Hi. The is the code for timer and a sound file. At the very beginning of the javascript in <script> tag in the very first line you can insert the path to a sound file - var PATH_TO_BUZZER = "buzzer.mp3"; So in place of "buzzer.mp3" should be "path/to/buzzer.mp3". Please let me know if something is not working or appearance of the timer should be changed. 
+Somehow today Upwork does not allow attach files except for mp3 so I will simply post code in chat. 

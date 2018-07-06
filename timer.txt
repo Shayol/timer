@@ -1,13 +1,4 @@
 <style>
-    body {
-        display: flex;
-        align-items: center;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
     .timer {
         display: flex;
         margin-left: auto;
@@ -17,6 +8,7 @@
         border-right: none;
         background: rgba(245, 243, 243, 0.788);
         font-family: 'Helvetica Neue', Arial, sans-serif;
+        box-sizing: border-box;
     }
 
     .timer__cell {
