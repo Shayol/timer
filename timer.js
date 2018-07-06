@@ -95,6 +95,7 @@ function Timer() {
         setDefaultTime();
         clearInterval(timerId);
         isRunning = false;
+        timerStart.innerText = "Start";
     }
 
     function updateTime(seconds) {
